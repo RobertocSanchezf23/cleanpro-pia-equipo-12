@@ -1,0 +1,84 @@
+name: CI/CD CleanPro
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pruebas:
+    name: Ruff + pruebas + cobertura (SQLite)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check src tests
+      - run: pytest -v --cov=src --cov-report=term-missing --cov-report=html --cov-fail-under=80
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cobertura-html
+          path: htmlcov/
+
+  pruebas-postgres:
+    name: Pruebas de integración (PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: cleanpro_pruebas
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgresql+psycopg://ci:ci@localhost:5432/cleanpro_pruebas
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -v tests/integration
+
+  docker:
+    name: Docker Compose (DB + App + Tests)
+    runs-on: ubuntu-latest
+    needs: [pruebas, pruebas-postgres]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir las imágenes
+        run: docker compose build
+      - name: Pruebas dentro de Docker contra PostgreSQL
+        run: docker compose run --rm tests
+      - name: Levantar la API con su base de datos
+        run: docker compose up -d --wait app
+      - name: Verificar /salud y Swagger
+        run: |
+          curl --fail --silent http://localhost:8000/salud
+          curl --fail --silent --output /dev/null http://localhost:8000/docs
+      - name: Apagar
+        if: always()
+        run: docker compose down -v
+
+  despliegue:
+    name: Despliegue en Render (CD)
+    runs-on: ubuntu-latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Avisar a Render que despliegue esta versión
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "No hay secreto RENDER_DEPLOY_HOOK configurado: se omite el despliegue."
+          else
+            curl --fail --silent --show-error -X POST "$RENDER_DEPLOY_HOOK"
+            echo "Despliegue solicitado a Render."
+          fi
