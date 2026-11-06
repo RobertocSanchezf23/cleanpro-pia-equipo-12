@@ -1,0 +1,25 @@
+[project]
+name = "cleanpro"
+version = "1.0.0"
+description = "CleanPro: sistema de cotización, programación, ejecución y facturación de servicios de limpieza (PIA CLN, Equipo 12)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+# Reglas fijas para que el resultado no cambie con cada versión nueva de Ruff.
+select = ["E", "F", "I"]
