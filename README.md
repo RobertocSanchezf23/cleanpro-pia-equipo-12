@@ -13,7 +13,7 @@
 
 | | Enlace |
 |---|---|
-| **Sistema desplegado (Swagger)** | _se agrega al desplegar en Render_ |
+| **Sistema desplegado (Swagger)** | https://cleanpro-pia-equipo-12.onrender.com/docs |
 | **Repositorio** | https://github.com/RobertocSanchezf23/cleanpro-pia-equipo-12 |
 
 CleanPro presta servicios de limpieza residencial y empresarial. Este sistema implementa su proceso principal con las reglas del BRD del equipo:
