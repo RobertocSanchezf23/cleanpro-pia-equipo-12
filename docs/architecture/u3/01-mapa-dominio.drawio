@@ -1,0 +1,167 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Mapa de dominio" id="Mapa_de_dominio">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t3" value="Mapa de Dominio — CleanPro · Contexto: Operación del servicio de limpieza (cotización → servicio → factura)" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=18;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="8" width="1500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="g4" value="Aggregate: Cotización" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="96" width="628" height="655" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Cotizacion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : CotizacionId&lt;br/&gt;+ ClienteId : ClienteId&lt;br/&gt;+ Inmueble : DatosDelInmueble&lt;br/&gt;+ Frecuencia : Frecuencia&lt;br/&gt;+ Extras : List&amp;lt;ExtraSolicitado&amp;gt;&lt;br/&gt;+ Estimacion : EstimacionOperativa&lt;br/&gt;+ Precio : Dinero&lt;br/&gt;+ Vigencia : Vigencia&lt;br/&gt;+ Estado : EstadoCotizacion&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Solicitar(...) : Cotizacion «static»&lt;br/&gt;+ Estimar(estimacion, calculadora)&lt;br/&gt;+ Enviar(fechaEnvio)&lt;br/&gt;+ Aceptar(fecha) : EstadoCotizacion&lt;br/&gt;+ Rechazar()&lt;br/&gt;+ MarcarVencida(hoy)&lt;br/&gt;+ EstaAceptada() : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="g4" vertex="1">
+          <mxGeometry x="16" y="34" width="261" height="294" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EstimacionOperativa&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ DuracionHoras : decimal&lt;br/&gt;+ PersonalNecesario : int&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="16" y="342" width="261" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Vigencia&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ FechaEnvio : DateTime&lt;br/&gt;+ DiasHabiles : int = 5&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ EstaVigente(fecha) : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="16" y="438" width="261" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;DatosDelInmueble&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Ubicacion : string&lt;br/&gt;+ SuperficieM2 : decimal&lt;br/&gt;+ Tipo : TipoDeInmueble&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="301" y="34" width="311" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Frecuencia&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Tipo : Unica | Semanal | Quincenal | Mensual&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ EsRecurrente() : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="301" y="145" width="311" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b10" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ExtraSolicitado&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Codigo : string&lt;br/&gt;+ Nombre : string&lt;br/&gt;+ Cargo : Dinero&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="301" y="249" width="311" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EstadoCotizacion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;Solicitada&lt;br/&gt;Pendiente&lt;br/&gt;Aceptada&lt;br/&gt;Rechazada&lt;br/&gt;Vencida&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g4" vertex="1">
+          <mxGeometry x="301" y="360" width="311" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="n12" value="&lt;b&gt;Invariantes&lt;/b&gt;&lt;br/&gt;• Solo se envía con precio calculado (RB-01, RB-03)&lt;br/&gt;• Solo se acepta/rechaza en estado Pendiente (US-02)&lt;br/&gt;• Fuera de 5 días hábiles no se acepta → Vencida (RB-08)&lt;br/&gt;• Solo el coordinador la estima o modifica (RB-15)" style="shape=note;whiteSpace=wrap;html=1;size=12;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fontSize=10;fillColor=#fffde7;strokeColor=#b59f3b;" parent="g4" vertex="1">
+          <mxGeometry x="16" y="557" width="596" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b5" target="b8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b5" target="b9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b5" target="b10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="b5" target="b6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;exitX=0;exitY=0.92;entryX=0;entryY=0.5;" parent="1" edge="1" source="b5" target="b7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g18" value="Aggregate: Servicio" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="678" y="96" width="830" height="661" as="geometry" />
+        </mxCell>
+        <mxCell id="b19" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Servicio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : ServicioId&lt;br/&gt;+ CotizacionId : CotizacionId&lt;br/&gt;+ Programacion : Programacion&lt;br/&gt;+ CuadrillaId : CuadrillaId&lt;br/&gt;+ SupervisorId : SupervisorId&lt;br/&gt;+ PrecioAcordado : Dinero&lt;br/&gt;+ Estado : EstadoServicio&lt;br/&gt;+ Incidencias : List&amp;lt;Incidencia&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ProgramarAsync(cotizacion, programacion, cuadrillaId,&lt;br/&gt;      supervisorId, disponibilidad) «static»&lt;br/&gt;+ RegistrarInicio(fechaHora)&lt;br/&gt;+ RegistrarIncidencia(tipo, descripcion, cargo?, supervisorId, fecha)&lt;br/&gt;+ AutorizarCargo(incidenciaId, coordinadorId)&lt;br/&gt;+ RegistrarAccesoDenegado(minutosEspera, supervisorId, fecha)&lt;br/&gt;+ RegistrarTerminacion(fechaHora)&lt;br/&gt;+ VerificarQueEsFacturable()&lt;br/&gt;+ CargosAutorizados() : List&amp;lt;CargoAdicional&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="g18" vertex="1">
+          <mxGeometry x="16" y="34" width="456" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="b20" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Programacion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ FechaHora : DateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g18" vertex="1">
+          <mxGeometry x="16" y="357" width="456" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="b21" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EstadoServicio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;Programado&lt;br/&gt;EnEjecucion&lt;br/&gt;Terminado&lt;br/&gt;NoRealizado&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g18" vertex="1">
+          <mxGeometry x="16" y="438" width="456" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="b22" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Entity»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Incidencia&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : IncidenciaId&lt;br/&gt;+ Tipo : TipoDeIncidencia&lt;br/&gt;+ Descripcion : string&lt;br/&gt;+ RegistradaEn : DateTime&lt;br/&gt;+ RegistradaPor : SupervisorId&lt;br/&gt;+ Cargo : CargoAdicional?&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ TieneCargoPendiente() : bool&lt;br/&gt;~ Autorizar(coordinadorId)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g18" vertex="1">
+          <mxGeometry x="496" y="34" width="318" height="178" as="geometry" />
+        </mxCell>
+        <mxCell id="b23" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CargoAdicional&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Monto : Dinero&lt;br/&gt;+ Estado : PendienteDeAutorizacion | Autorizado&lt;br/&gt;+ AutorizadoPor : CoordinadorId?&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g18" vertex="1">
+          <mxGeometry x="496" y="226" width="318" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b24" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;TipoDeIncidencia&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;ServicioAdicionalEnSitio&lt;br/&gt;MaterialEspecial&lt;br/&gt;InmuebleMayorALoReportado&lt;br/&gt;ClienteNoPermiteAcceso&lt;br/&gt;EmpleadoAusente&lt;br/&gt;OtroCambio&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g18" vertex="1">
+          <mxGeometry x="496" y="337" width="318" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n25" value="&lt;b&gt;Invariantes&lt;/b&gt;&lt;br/&gt;• Se crea solo desde una cotización Aceptada y con cuadrilla (RB-02, RB-04)&lt;br/&gt;• Inicio solo si está Programado; terminación solo si está EnEjecucion (RB-05, RES-03)&lt;br/&gt;• Acceso denegado solo tras 15 min de espera → NoRealizado + cargo 50% (RB-11, RES-06)&lt;br/&gt;• Facturable solo si Terminado o NoRealizado y sin cargos pendientes (RB-07, RB-14, H-01)" style="shape=note;whiteSpace=wrap;html=1;size=12;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fontSize=10;fillColor=#fffde7;strokeColor=#b59f3b;" parent="g18" vertex="1">
+          <mxGeometry x="16" y="563" width="798" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" value="0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b19" target="b22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" value="0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b22" target="b23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="b19" target="b20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g29" value="Aggregate: Factura" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="1538" y="96" width="413" height="515" as="geometry" />
+        </mxCell>
+        <mxCell id="b30" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Factura&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : FacturaId&lt;br/&gt;+ ServicioId : ServicioId&lt;br/&gt;+ Conceptos : List&amp;lt;ConceptoFacturado&amp;gt;&lt;br/&gt;+ Total : Dinero&lt;br/&gt;+ FechaEmision : DateTime&lt;br/&gt;+ EstadoDePago : EstadoDePago&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Emitir(servicioId, conceptos, fecha) : Factura «static»&lt;br/&gt;+ MarcarPagada()&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="g29" vertex="1">
+          <mxGeometry x="16" y="34" width="381" height="178" as="geometry" />
+        </mxCell>
+        <mxCell id="b31" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ConceptoFacturado&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Descripcion : string&lt;br/&gt;+ Monto : Dinero&lt;br/&gt;+ Origen : Servicio | Incidencia | Cancelacion&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g29" vertex="1">
+          <mxGeometry x="16" y="226" width="381" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b32" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EstadoDePago&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;Pendiente&lt;br/&gt;Pagada&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g29" vertex="1">
+          <mxGeometry x="16" y="337" width="381" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="n33" value="&lt;b&gt;Invariantes&lt;/b&gt;&lt;br/&gt;• Total = suma de conceptos (RES-04)&lt;br/&gt;• Una sola factura por servicio (SUP-04)&lt;br/&gt;• Se emite con estado de pago Pendiente" style="shape=note;whiteSpace=wrap;html=1;size=12;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fontSize=10;fillColor=#fffde7;strokeColor=#b59f3b;" parent="g29" vertex="1">
+          <mxGeometry x="16" y="433" width="381" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" value="1..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;" parent="1" edge="1" source="b30" target="b31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e35" value="CotizacionId (referencia por Id)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=0;entryX=0.8;entryY=0;" parent="1" edge="1" source="b19" target="b5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="922.0" y="66" />
+              <mxPoint x="244.8" y="66" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e36" value="ServicioId (1 factura por servicio)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=0;entryX=0.7;entryY=0;" parent="1" edge="1" source="b30" target="b19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1744.5" y="72" />
+              <mxPoint x="1013.2" y="72" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g37" value="Domain Services" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="797" width="1067" height="184" as="geometry" />
+        </mxCell>
+        <mxCell id="b38" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CalculadoraDePrecio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;RB-03: $12/m² residencial · $15/m² empresarial&lt;br/&gt;−10% si la frecuencia es recurrente (H-05)&lt;br/&gt;+ cargo de cada extra del catálogo&lt;br/&gt;Tarifas y descuento se inyectan (SOLID S-2)&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Calcular(inmueble, frecuencia, extras) : Dinero&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g37" vertex="1">
+          <mxGeometry x="16" y="34" width="330" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="b39" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;DisponibilidadDeCuadrilla&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;RES-01: no programar sin cuadrilla disponible&lt;br/&gt;Consulta servicios ya programados&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ EstaDisponibleAsync(cuadrillaId, fechaHora) : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g37" vertex="1">
+          <mxGeometry x="362" y="34" width="349" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="b40" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;GeneradorDeFactura&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;Terminado → precio + cargos autorizados&lt;br/&gt;NoRealizado → cargo de cancelación 50%&lt;br/&gt;Una factura por servicio (SUP-04, SOLID S-6)&lt;br/&gt;RB-07, RB-11, RB-14, RES-04&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ GenerarAsync(servicio, fechaEmision) : Factura&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g37" vertex="1">
+          <mxGeometry x="727" y="34" width="324" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="g41" value="Domain Events (hechos que ya ocurrieron)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="1117" y="797" width="469" height="249" as="geometry" />
+        </mxCell>
+        <mxCell id="b42" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Event»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Evento  ⟵ lo publica  →  le interesa a&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;CotizacionEnviada  ⟵ Cotizacion  →  Cliente&lt;br/&gt;CotizacionAceptada  ⟵ Cotizacion  →  Coordinador (puede programar)&lt;br/&gt;CotizacionRechazada  ⟵ Cotizacion&lt;br/&gt;CotizacionVencida  ⟵ Cotizacion  →  Coordinador (nueva cotización)&lt;br/&gt;ServicioProgramado  ⟵ Servicio  →  Cliente (US-03)&lt;br/&gt;IncidenciaRegistrada  ⟵ Servicio  →  Administración (RB-06, US-19)&lt;br/&gt;CargoAdicionalAutorizado  ⟵ Servicio&lt;br/&gt;ServicioTerminado  ⟵ Servicio  →  habilita facturación (US-14)&lt;br/&gt;ServicioNoRealizado  ⟵ Servicio  →  cargo de cancelación (RB-11)&lt;br/&gt;FacturaEmitida  ⟵ Factura  →  Cliente (US-05)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g41" vertex="1">
+          <mxGeometry x="16" y="34" width="437" height="199" as="geometry" />
+        </mxCell>
+        <mxCell id="g43" value="Referencias y datos compartidos" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="1616" y="797" width="287" height="462" as="geometry" />
+        </mxCell>
+        <mxCell id="b44" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Entity (referencia)»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Cuadrilla&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : CuadrillaId&lt;br/&gt;+ Nombre : string&lt;br/&gt;+ Integrantes : List&amp;lt;IntegranteId&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g43" vertex="1">
+          <mxGeometry x="16" y="34" width="255" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b45" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Datos de referencia»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ExtraDelCatalogo&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Codigo : string&lt;br/&gt;+ Nombre : string&lt;br/&gt;+ PrecioReferencia : Dinero  (SUP-06)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g43" vertex="1">
+          <mxGeometry x="16" y="145" width="255" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b46" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Object compartido»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Dinero&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Monto : decimal&lt;br/&gt;+ Moneda : MXN&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Sumar(otro) : Dinero&lt;br/&gt;+ Restar(otro) : Dinero&lt;br/&gt;+ Porcentaje(p) : Dinero&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="g43" vertex="1">
+          <mxGeometry x="16" y="256" width="255" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="t47" value="&lt;i&gt;Cliente, Coordinador y Supervisor se referencian solo por Id (sus datos no tienen reglas en estos casos de uso).&lt;/i&gt;" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=10;" parent="g43" vertex="1">
+          <mxGeometry x="16" y="398" width="255" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e48" value="CuadrillaId (SUP-01)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0;exitY=0.97;entryX=0.93;entryY=0;" parent="1" edge="1" source="b19" target="b44">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="663" y="429.73" />
+              <mxPoint x="663" y="779" />
+              <mxPoint x="1869.15" y="779" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t49" value="&lt;b&gt;Leyenda:&lt;/b&gt; borde grueso = raíz del Aggregate · ◆ composición dentro del límite de consistencia · flecha punteada = referencia a otro Aggregate solo por Id · contenedor punteado = límite del Aggregate" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="20" y="1283" width="1500" height="22" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

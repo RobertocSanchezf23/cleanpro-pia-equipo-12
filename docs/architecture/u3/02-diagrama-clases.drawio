@@ -1,0 +1,206 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Diagrama de clases" id="Diagrama_de_clases">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t3" value="Diagrama de Clases — CleanPro (Domain Model + Service Layer + Repository/Unit of Work + CQRS básico)" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=18;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="8" width="1700" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="g4" value="CleanPro.Application  —  Capa de aplicación (coordina, no decide)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#fce4ec;strokeColor=#c2185b;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="60" width="2150" height="434" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Application Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CotizacionAppService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- cotizaciones : ICotizacionRepository&lt;br/&gt;- catalogo : ICatalogoDeExtras&lt;br/&gt;- calculadora : CalculadoraDePrecio&lt;br/&gt;- uow : IUnitOfWork&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ SolicitarCotizacion(cmd) : CotizacionId&lt;br/&gt;+ EstimarYEnviarCotizacion(cmd) : CotizacionEnviadaDto&lt;br/&gt;+ ResponderCotizacion(cmd) : EstadoCotizacion&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="362" height="163" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Application Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ProgramacionAppService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- cotizaciones : ICotizacionRepository&lt;br/&gt;- servicios : IServicioRepository&lt;br/&gt;- disponibilidad : DisponibilidadDeCuadrilla&lt;br/&gt;- uow : IUnitOfWork&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ProgramarServicio(cmd) : ServicioId&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="424" y="100" width="299" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Application Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EjecucionServicioAppService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- servicios : IServicioRepository&lt;br/&gt;- catalogo : ICatalogoDeExtras&lt;br/&gt;- uow : IUnitOfWork&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ RegistrarIncidencia(cmd) : IncidenciaId&lt;br/&gt;+ RegistrarAccesoDenegado(cmd) : EstadoServicio&lt;br/&gt;+ AutorizarCargoAdicional(cmd)&lt;br/&gt;+ RegistrarInicio(cmd)&lt;br/&gt;+ RegistrarTerminacion(cmd)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="745" y="100" width="318" height="178" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Application Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;FacturacionAppService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- servicios : IServicioRepository&lt;br/&gt;- generador : GeneradorDeFactura&lt;br/&gt;- facturas : IFacturaRepository&lt;br/&gt;- uow : IUnitOfWork&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ FacturarServicio(cmd) : FacturaId&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1085" y="100" width="242" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Command (escritura)»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Commands&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;SolicitarCotizacionCommand&lt;br/&gt;EstimarYEnviarCotizacionCommand&lt;br/&gt;ResponderCotizacionCommand&lt;br/&gt;ProgramarServicioCommand&lt;br/&gt;RegistrarIncidenciaCommand&lt;br/&gt;RegistrarAccesoDenegadoCommand&lt;br/&gt;AutorizarCargoAdicionalCommand&lt;br/&gt;FacturarServicioCommand&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="261.0" y="304" width="217" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="b10" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«DTO (lectura)»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;DTOs de lectura&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;ServicioProgramadoDto&lt;br/&gt;ServicioAsignadoDto&lt;br/&gt;FacturacionDto&lt;br/&gt;CotizacionEnviadaDto&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="613.5" y="304" width="154" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="b11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Query Handler (lectura)»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Query Handlers&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;ServiciosProgramadosQueryHandler&lt;br/&gt;ServiciosDeCuadrillaQueryHandler&lt;br/&gt;FacturacionPorServicioQueryHandler&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Handle(query) : List&amp;lt;Dto&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="934.0" y="304" width="236" height="119" as="geometry" />
+        </mxCell>
+        <mxCell id="b12" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IUnitOfWork&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ConfirmarAsync() : Task&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="100" width="280" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="b13" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IPublicadorDeEventos&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ PublicarAsync(eventos) : Task&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="183" width="280" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="b14" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IConsultasDeServicios&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ServiciosProgramados(desde, hasta)&lt;br/&gt;+ ServiciosDeCuadrilla(id, fecha)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="266" width="280" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b15" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IConsultasDeFacturacion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ FacturacionPorServicio(estado?)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="364" width="280" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="g16" value="CleanPro.Domain — reglas e invariantes (no depende de nadie)" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=743;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="534" width="1678" height="933" as="geometry" />
+        </mxCell>
+        <mxCell id="b17" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«abstract»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;AggregateRoot&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;# Eventos : List&amp;lt;EventoDeDominio&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;# Registrar(evento)&lt;br/&gt;+ ExtraerEventos() : List&amp;lt;EventoDeDominio&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="801" y="574" width="286" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="b18" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Cotizacion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : CotizacionId&lt;br/&gt;+ Inmueble : DatosDelInmueble&lt;br/&gt;+ Frecuencia : Frecuencia&lt;br/&gt;+ Extras : List&amp;lt;ExtraSolicitado&amp;gt;&lt;br/&gt;+ Precio : Dinero&lt;br/&gt;+ Vigencia : Vigencia&lt;br/&gt;+ Estado : EstadoCotizacion&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Solicitar(...) : Cotizacion «static»&lt;br/&gt;+ Estimar(estimacion, calculadora)&lt;br/&gt;+ Enviar(fechaEnvio)&lt;br/&gt;+ Aceptar(fecha) : EstadoCotizacion&lt;br/&gt;+ Rechazar()&lt;br/&gt;+ MarcarVencida(hoy)&lt;br/&gt;+ EstaAceptada() : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="40" y="719" width="261" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="b19" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Servicio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : ServicioId&lt;br/&gt;+ CotizacionId : CotizacionId&lt;br/&gt;+ Programacion : Programacion&lt;br/&gt;+ CuadrillaId : CuadrillaId&lt;br/&gt;+ SupervisorId : SupervisorId&lt;br/&gt;+ PrecioAcordado : Dinero&lt;br/&gt;+ Estado : EstadoServicio&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ProgramarAsync(cotizacion, programacion, cuadrillaId,&lt;br/&gt;      supervisorId, disponibilidad) «static»&lt;br/&gt;+ RegistrarInicio(fechaHora)&lt;br/&gt;+ RegistrarIncidencia(tipo, descripcion, cargo?, supervisorId, fecha)&lt;br/&gt;+ RegistrarAccesoDenegado(minutosEspera, supervisorId, fecha)&lt;br/&gt;+ AutorizarCargo(incidenciaId, coordinadorId)&lt;br/&gt;+ RegistrarTerminacion(fechaHora)&lt;br/&gt;+ VerificarQueEsFacturable()&lt;br/&gt;+ CargosAutorizados() : List&amp;lt;CargoAdicional&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="323" y="719" width="456" height="294" as="geometry" />
+        </mxCell>
+        <mxCell id="b20" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Entity»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Incidencia&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : IncidenciaId&lt;br/&gt;+ Tipo : TipoDeIncidencia&lt;br/&gt;+ Descripcion : string&lt;br/&gt;+ RegistradaEn : DateTime&lt;br/&gt;+ Cargo : CargoAdicional?&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ TieneCargoPendiente() : bool&lt;br/&gt;~ Autorizar(coordinadorId)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="801" y="719" width="211" height="163" as="geometry" />
+        </mxCell>
+        <mxCell id="b21" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Aggregate Root»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Factura&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Id : FacturaId&lt;br/&gt;+ ServicioId : ServicioId&lt;br/&gt;+ Conceptos : List&amp;lt;ConceptoFacturado&amp;gt;&lt;br/&gt;+ Total : Dinero&lt;br/&gt;+ EstadoDePago : EstadoDePago&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Emitir(servicioId, conceptos, fecha) : Factura «static»&lt;br/&gt;+ MarcarPagada()&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="1034" y="719" width="381" height="163" as="geometry" />
+        </mxCell>
+        <mxCell id="b22" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«abstract»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;EventoDeDominio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ OcurrioEn : DateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1043" width="160" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="b23" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Event»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Eventos&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;CotizacionEnviada · CotizacionAceptada&lt;br/&gt;CotizacionRechazada · CotizacionVencida&lt;br/&gt;ServicioProgramado · IncidenciaRegistrada&lt;br/&gt;CargoAdicionalAutorizado · ServicioTerminado&lt;br/&gt;ServicioNoRealizado · FacturaEmitida&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="222" y="1043" width="299" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="b24" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Exceptions»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ExcepcionDeDominio (y derivadas)&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;CotizacionNoAceptada (RB-02) · CotizacionYaVencida (RB-08)&lt;br/&gt;CuadrillaNoDisponible (RES-01) · ExtraNoExisteEnCatalogo (SUP-06)&lt;br/&gt;TiempoDeEsperaInsuficiente (RES-06) · ServicioNoFacturable (RB-07)&lt;br/&gt;CargosPendientesDeAutorizacion (RB-14) · FacturaYaEmitida (SUP-04)&lt;br/&gt;TransicionDeEstadoInvalida (estado no permite la operación)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="543" y="1043" width="437" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="b25" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CalculadoraDePrecio&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- tarifas : TarifasPorTipoDeInmueble&lt;br/&gt;- descuento : PoliticaDeDescuento&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ Calcular(inmueble, frecuencia, extras) : Dinero&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1199" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="b26" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;DisponibilidadDeCuadrilla&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- servicios : IServicioRepository&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ EstaDisponibleAsync(cuadrillaId, fechaHora) : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="392" y="1199" width="349" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b27" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Domain Service»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;GeneradorDeFactura&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- facturas : IFacturaRepository&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ GenerarAsync(servicio, fechaEmision) : Factura&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="763" y="1199" width="324" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b28" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«Value Objects»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Value Objects&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;DatosDelInmueble · Frecuencia · ExtraSolicitado&lt;br/&gt;EstimacionOperativa · Vigencia · Programacion&lt;br/&gt;CargoAdicional · ConceptoFacturado · Dinero&lt;br/&gt;TarifasPorTipoDeInmueble · PoliticaDeDescuento&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1109" y="1199" width="318" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="b29" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«enumerations»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Enumeraciones&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;EstadoCotizacion · EstadoServicio&lt;br/&gt;TipoDeInmueble · TipoDeIncidencia&lt;br/&gt;EstadoDePago&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1449" y="1199" width="229" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b30" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface · Repository»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ICotizacionRepository&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ObtenerPorIdAsync(id) : Cotizacion?&lt;br/&gt;+ AgregarAsync(cotizacion)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1350" width="255" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b31" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface · Repository»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IServicioRepository&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ObtenerPorIdAsync(id) : Servicio?&lt;br/&gt;+ AgregarAsync(servicio)&lt;br/&gt;+ CuadrillaTieneServicioEnAsync(cuadrillaId, fechaHora) : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="335" y="1350" width="412" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b32" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface · Repository»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IFacturaRepository&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ AgregarAsync(factura)&lt;br/&gt;+ ExisteFacturaParaServicioAsync(servicioId) : bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="787" y="1350" width="343" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b33" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«interface · Repository»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ICatalogoDeExtras&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;+ ObtenerPorCodigoAsync(codigo) : ExtraDelCatalogo?&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1170" y="1350" width="343" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="g34" value="CleanPro.Infrastructure — implementa las interfaces" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 4;fillColor=#e0f2f1;strokeColor=#00796b;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=1305;spacingTop=4;fontStyle=1;fontSize=13;container=1;collapsible=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="1507" width="2150" height="353" as="geometry" />
+        </mxCell>
+        <mxCell id="b35" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CotizacionRepositoryEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- db : BaseDeDatosEnMemoria&lt;br/&gt;- uow : UnitOfWorkEnMemoria&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1547" width="250" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b36" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ServicioRepositoryEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- db : BaseDeDatosEnMemoria&lt;br/&gt;- uow : UnitOfWorkEnMemoria&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="335" y="1547" width="250" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b37" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;FacturaRepositoryEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- db : BaseDeDatosEnMemoria&lt;br/&gt;- uow : UnitOfWorkEnMemoria&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="787" y="1547" width="250" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b38" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CatalogoDeExtrasEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- extras : Dictionary&amp;lt;string, ExtraDelCatalogo&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1170" y="1547" width="250" height="67" as="geometry" />
+        </mxCell>
+        <mxCell id="b39" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;UnitOfWorkEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- pendientes : List&amp;lt;AggregateRoot&amp;gt;&lt;br/&gt;- publicador : IPublicadorDeEventos&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="1547" width="280" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="b40" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;PublicadorDeEventosEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;- manejadores : List&amp;lt;IManejadorDeEvento&amp;gt;&lt;br/&gt;NotificarAdministracionAlRegistrarIncidencia&lt;br/&gt;NotificarClienteAlProgramarServicio&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="1645" width="280" height="97" as="geometry" />
+        </mxCell>
+        <mxCell id="b41" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;«class»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ConsultasEnMemoria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;/&gt;&lt;p style=&quot;margin:0px;margin-left:6px;&quot;&gt;implementa IConsultasDeServicios&lt;br/&gt;e IConsultasDeFacturacion&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontSize=11;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1870" y="1758" width="280" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="n42" value="&lt;b&gt;Implementación real propuesta:&lt;/b&gt; repositorios con EF Core + CleanProDbContext; UnitOfWork = SaveChangesAsync en una transacción; publicador con tabla Outbox.&lt;br/&gt;El código base usa versiones &lt;i&gt;EnMemoria&lt;/i&gt; porque el caso es ficticio (no se construye base de datos)." style="shape=note;whiteSpace=wrap;html=1;size=12;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fontSize=10;fillColor=#fffde7;strokeColor=#b59f3b;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1649" width="760" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="e43" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.3;entryY=0;" parent="1" edge="1" source="b5" target="b18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e44" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.55;entryY=0;" parent="1" edge="1" source="b6" target="b19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e45" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.9;entryY=0;" parent="1" edge="1" source="b7" target="b19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e46" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" parent="1" edge="1" source="b8" target="b27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1206.0" y="516" />
+              <mxPoint x="1440" y="516" />
+              <mxPoint x="1440" y="1184.0" />
+              <mxPoint x="844.0" y="1184.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e47" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" parent="1" edge="1" source="b11" target="b14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" parent="1" edge="1" source="b11" target="b15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b18" target="b17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b19" target="b17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b21" target="b17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e52" value="0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;startArrow=diamondThin;startFill=1;startSize=14;endArrow=none;exitX=1;exitY=0.3;entryX=0;entryY=0.3;" parent="1" edge="1" source="b19" target="b20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.3;entryY=0;" parent="1" edge="1" source="b26" target="b31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="b27" target="b32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e55" value="«crea»" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;dashed=1;exitX=0.918;exitY=0;entryX=0.070;entryY=1;" parent="1" edge="1" source="b27" target="b21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e56" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;endSize=10;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" parent="1" edge="1" source="b23" target="b22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b35" target="b30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e58" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b36" target="b31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b37" target="b32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e60" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" edge="1" source="b38" target="b33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e61" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" parent="1" edge="1" source="b39" target="b12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e62" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" parent="1" edge="1" source="b40" target="b13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e63" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" parent="1" edge="1" source="b41" target="b14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e64" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#ffffff;endArrow=block;endFill=0;dashed=1;endSize=10;exitX=0;exitY=0.3;entryX=0;entryY=0.7;" parent="1" edge="1" source="b41" target="b15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t65" value="&lt;b&gt;Leyenda:&lt;/b&gt; ⇢ dependencia (usa) · ▷ línea continua = herencia · ▷ línea punteada = implementa interfaz · ◆ composición · borde grueso = Aggregate Root · Dependencias apuntan hacia el dominio: Infrastructure → Application → Domain" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="20" y="1874" width="1700" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

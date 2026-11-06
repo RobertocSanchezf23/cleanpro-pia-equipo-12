@@ -1,0 +1,2291 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CleanPro API",
+    "description": "\nSistema de CleanPro (Equipo 12, PIA de Componentes de Lógica de Negocio, FIME UANL).\n\n**Proceso:** cotización → respuesta del cliente → programación y cuadrilla → ejecución con incidencias → facturación.\n\n**Cómo probar:** cada operación pide el encabezado `X-Rol` (RB-15). Por ejemplo, el coordinador estima y envía\nla cotización, el cliente la acepta, el supervisor registra el inicio y administración factura.\n\n**Errores de negocio:** la respuesta indica la regla del BRD que se violó, por ejemplo\n`{\"error\": \"regla_de_negocio\", \"regla\": \"RB-02\", \"detalle\": \"...\"}`.\n\n| Código | Significado |\n|---|---|\n| 403 | El rol no tiene permiso (RB-15) |\n| 404 | El recurso no existe |\n| 409 | La máquina de estados no permite la operación |\n| 422 | Se viola una regla de negocio o los datos son inválidos |\n",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/salud": {
+      "get": {
+        "tags": [
+          "0. Salud"
+        ],
+        "summary": "Estado del servicio y de la base de datos",
+        "operationId": "salud_salud_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-01 Solicitar cotización",
+        "operationId": "solicitar_cotizacion_cotizaciones_post",
+        "parameters": [
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CotizacionEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "REP-01 Cotizaciones por estado",
+        "operationId": "listar_cotizaciones_cotizaciones_get",
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "examples": [
+                "PENDIENTE"
+              ],
+              "title": "Estado"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}": {
+      "get": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "Consultar cotización (US-22: la marca como vencida si ya pasó su vigencia)",
+        "operationId": "consultar_cotizacion_cotizaciones__cotizacion_id__get",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}/estimacion": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-06 Estimar duración, personal y precio (RB-03)",
+        "operationId": "estimar_cotizaciones__cotizacion_id__estimacion_post",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstimacionEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}/envio": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-07 Enviar al cliente",
+        "operationId": "enviar_cotizaciones__cotizacion_id__envio_post",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}/aceptacion": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-02 Aceptar",
+        "operationId": "aceptar_cotizaciones__cotizacion_id__aceptacion_post",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}/rechazo": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-02 Rechazar",
+        "operationId": "rechazar_cotizaciones__cotizacion_id__rechazo_post",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotizaciones/{cotizacion_id}/renovacion": {
+      "post": {
+        "tags": [
+          "1. Cotizaciones (CU-01, CU-02)"
+        ],
+        "summary": "US-22 Generar una nueva cotización a partir de una vencida",
+        "operationId": "renovar_cotizaciones__cotizacion_id__renovacion_post",
+        "parameters": [
+          {
+            "name": "cotizacion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cotizacion Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CotizacionSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-08 / US-09 Programar servicio y asignar cuadrilla",
+        "operationId": "programar_servicios_post",
+        "parameters": [
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgramacionEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "REP-02 Servicios (filtro opcional por estado)",
+        "operationId": "listar_servicios_servicios_get",
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "examples": [
+                "PROGRAMADO"
+              ],
+              "title": "Estado"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}": {
+      "get": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "Detalle del servicio",
+        "operationId": "consultar_servicio_servicios__servicio_id__get",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/reprogramacion": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-04 Reprogramar (RB-09)",
+        "operationId": "reprogramar_servicios__servicio_id__reprogramacion_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReprogramacionEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/ausencia": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-10 Empleado ausente: reasignar o reprogramar (RB-10)",
+        "operationId": "ausencia_servicios__servicio_id__ausencia_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AusenciaEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/acceso-denegado": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-16 Cliente no permite el acceso (RB-11)",
+        "operationId": "acceso_denegado_servicios__servicio_id__acceso_denegado_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccesoDenegadoEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/inicio": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-13 Registrar inicio (RB-05)",
+        "operationId": "registrar_inicio_servicios__servicio_id__inicio_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/incidencias": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-15 Registrar incidencia (RB-06, RB-12, RB-13, RB-14)",
+        "operationId": "registrar_incidencia_servicios__servicio_id__incidencias_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidenciaEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/cargos/{cargo_id}/autorizacion": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-11 Autorizar cargo adicional (RB-12, RB-14, RB-15)",
+        "operationId": "autorizar_cargo_servicios__servicio_id__cargos__cargo_id__autorizacion_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "cargo_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cargo Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/recalculo": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-12 Recalcular precio por inmueble mayor (RB-13)",
+        "operationId": "recalcular_servicios__servicio_id__recalculo_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servicios/{servicio_id}/terminacion": {
+      "post": {
+        "tags": [
+          "2. Servicios (CU-03, CU-04)"
+        ],
+        "summary": "US-14 Registrar terminación (RB-05, RES-03)",
+        "operationId": "registrar_terminacion_servicios__servicio_id__terminacion_post",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Servicio Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicioSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/facturas": {
+      "post": {
+        "tags": [
+          "3. Facturación (CU-05)"
+        ],
+        "summary": "US-20 Registrar facturación (RB-07, RB-11, RB-14, SUP-04)",
+        "operationId": "facturar_facturas_post",
+        "parameters": [
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacturaEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacturaSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/facturas/{factura_id}": {
+      "get": {
+        "tags": [
+          "3. Facturación (CU-05)"
+        ],
+        "summary": "US-05 Consultar factura",
+        "operationId": "consultar_factura_facturas__factura_id__get",
+        "parameters": [
+          {
+            "name": "factura_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Factura Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacturaSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/facturas/{factura_id}/pago": {
+      "post": {
+        "tags": [
+          "3. Facturación (CU-05)"
+        ],
+        "summary": "Registrar pago (H-14)",
+        "operationId": "registrar_pago_facturas__factura_id__pago_post",
+        "parameters": [
+          {
+            "name": "factura_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Factura Id"
+            }
+          },
+          {
+            "name": "X-Rol",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Rol",
+              "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+            },
+            "description": "Rol de quien realiza la operación (RB-15): CLIENTE, COORDINADOR, SUPERVISOR, CUADRILLA o ADMINISTRACION"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacturaSalida"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "Clientes (datos de demostración del paquete del PIA)",
+        "operationId": "clientes_clientes_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuadrillas": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "Cuadrillas",
+        "operationId": "cuadrillas_cuadrillas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuadrillas/{cuadrilla_id}/servicios": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "US-17 Servicios asignados a una cuadrilla",
+        "operationId": "servicios_de_cuadrilla_cuadrillas__cuadrilla_id__servicios_get",
+        "parameters": [
+          {
+            "name": "cuadrilla_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cuadrilla Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalogo/extras": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "Catálogo de extras (SUP-06)",
+        "operationId": "catalogo_catalogo_extras_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notificaciones": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "US-19 / US-03 / US-05 Notificaciones registradas",
+        "operationId": "notificaciones_notificaciones_get",
+        "parameters": [
+          {
+            "name": "destinatario",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "examples": [
+                "ADMINISTRACION"
+              ],
+              "title": "Destinatario"
+            }
+          },
+          {
+            "name": "cliente_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cliente Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes/resumen": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "US-21 Resumen de servicios, incidencias y facturación",
+        "operationId": "resumen_reportes_resumen_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes/incidencias": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "REP-03 Incidencias registradas",
+        "operationId": "reporte_incidencias_reportes_incidencias_get",
+        "parameters": [
+          {
+            "name": "servicio_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Servicio Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes/facturacion": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "REP-04 Facturación y estado de pago",
+        "operationId": "reporte_facturacion_reportes_facturacion_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes/carga-cuadrillas": {
+      "get": {
+        "tags": [
+          "4. Consultas y reportes (CQRS)"
+        ],
+        "summary": "REP-05 Servicios por cuadrilla",
+        "operationId": "carga_cuadrillas_reportes_carga_cuadrillas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccesoDenegadoEntrada": {
+        "properties": {
+          "minutos_espera": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minutos Espera"
+          }
+        },
+        "type": "object",
+        "required": [
+          "minutos_espera"
+        ],
+        "title": "AccesoDenegadoEntrada",
+        "example": {
+          "minutos_espera": 15
+        }
+      },
+      "AusenciaEntrada": {
+        "properties": {
+          "integrante": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Integrante"
+          },
+          "reasignado": {
+            "type": "boolean",
+            "title": "Reasignado"
+          },
+          "nuevo_inicio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nuevo Inicio"
+          }
+        },
+        "type": "object",
+        "required": [
+          "integrante",
+          "reasignado"
+        ],
+        "title": "AusenciaEntrada",
+        "example": {
+          "integrante": "Luis Pérez",
+          "nuevo_inicio": "2026-12-17T09:00:00",
+          "reasignado": false
+        }
+      },
+      "CargoSalida": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "origen": {
+            "type": "string",
+            "title": "Origen"
+          },
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion"
+          },
+          "monto": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Monto"
+          },
+          "autorizado": {
+            "type": "boolean",
+            "title": "Autorizado"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "origen",
+          "descripcion",
+          "monto",
+          "autorizado"
+        ],
+        "title": "CargoSalida"
+      },
+      "ConceptoSalida": {
+        "properties": {
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion"
+          },
+          "origen": {
+            "type": "string",
+            "title": "Origen"
+          },
+          "monto": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Monto"
+          },
+          "referencia": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Referencia"
+          }
+        },
+        "type": "object",
+        "required": [
+          "descripcion",
+          "origen",
+          "monto",
+          "referencia"
+        ],
+        "title": "ConceptoSalida"
+      },
+      "CotizacionEntrada": {
+        "properties": {
+          "cliente_id": {
+            "type": "string",
+            "title": "Cliente Id"
+          },
+          "ubicacion": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Ubicacion"
+          },
+          "superficie_m2": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Superficie M2"
+          },
+          "tipo_inmueble": {
+            "$ref": "#/components/schemas/TipoInmueble"
+          },
+          "frecuencia": {
+            "$ref": "#/components/schemas/Frecuencia"
+          },
+          "extras": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Extras",
+            "description": "Códigos del catálogo (GET /catalogo/extras)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cliente_id",
+          "ubicacion",
+          "superficie_m2",
+          "tipo_inmueble",
+          "frecuencia"
+        ],
+        "title": "CotizacionEntrada",
+        "example": {
+          "cliente_id": "CLN-C001",
+          "extras": [
+            "VENTANAS"
+          ],
+          "frecuencia": "UNICA",
+          "superficie_m2": 100,
+          "tipo_inmueble": "RESIDENCIAL",
+          "ubicacion": "Av. Universidad 500, San Nicolás"
+        }
+      },
+      "CotizacionSalida": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "cliente_id": {
+            "type": "string",
+            "title": "Cliente Id"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "ubicacion": {
+            "type": "string",
+            "title": "Ubicacion"
+          },
+          "superficie_m2": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Superficie M2"
+          },
+          "tipo_inmueble": {
+            "type": "string",
+            "title": "Tipo Inmueble"
+          },
+          "frecuencia": {
+            "type": "string",
+            "title": "Frecuencia"
+          },
+          "extras": {
+            "items": {
+              "$ref": "#/components/schemas/ExtraSalida"
+            },
+            "type": "array",
+            "title": "Extras"
+          },
+          "duracion_horas": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duracion Horas"
+          },
+          "personal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Personal"
+          },
+          "precio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precio"
+          },
+          "solicitada_en": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Solicitada En"
+          },
+          "enviada_en": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enviada En"
+          },
+          "vence_en": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vence En"
+          },
+          "renovada_de": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Renovada De"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "cliente_id",
+          "estado",
+          "ubicacion",
+          "superficie_m2",
+          "tipo_inmueble",
+          "frecuencia",
+          "extras",
+          "duracion_horas",
+          "personal",
+          "precio",
+          "solicitada_en",
+          "enviada_en",
+          "vence_en",
+          "renovada_de"
+        ],
+        "title": "CotizacionSalida"
+      },
+      "EstimacionEntrada": {
+        "properties": {
+          "duracion_horas": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Duracion Horas"
+          },
+          "personal": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Personal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "duracion_horas",
+          "personal"
+        ],
+        "title": "EstimacionEntrada",
+        "example": {
+          "duracion_horas": 3,
+          "personal": 2
+        }
+      },
+      "ExtraSalida": {
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "title": "Codigo"
+          },
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion"
+          },
+          "precio": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Precio"
+          }
+        },
+        "type": "object",
+        "required": [
+          "codigo",
+          "descripcion",
+          "precio"
+        ],
+        "title": "ExtraSalida"
+      },
+      "FacturaEntrada": {
+        "properties": {
+          "servicio_id": {
+            "type": "string",
+            "title": "Servicio Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "servicio_id"
+        ],
+        "title": "FacturaEntrada"
+      },
+      "FacturaSalida": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "servicio_id": {
+            "type": "string",
+            "title": "Servicio Id"
+          },
+          "cliente_id": {
+            "type": "string",
+            "title": "Cliente Id"
+          },
+          "emitida_en": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Emitida En"
+          },
+          "estado_pago": {
+            "type": "string",
+            "title": "Estado Pago"
+          },
+          "pagada_en": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagada En"
+          },
+          "total": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total"
+          },
+          "conceptos": {
+            "items": {
+              "$ref": "#/components/schemas/ConceptoSalida"
+            },
+            "type": "array",
+            "title": "Conceptos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "servicio_id",
+          "cliente_id",
+          "emitida_en",
+          "estado_pago",
+          "pagada_en",
+          "total",
+          "conceptos"
+        ],
+        "title": "FacturaSalida"
+      },
+      "Frecuencia": {
+        "type": "string",
+        "enum": [
+          "UNICA",
+          "SEMANAL",
+          "QUINCENAL",
+          "MENSUAL"
+        ],
+        "title": "Frecuencia",
+        "description": "RB-03: la frecuencia recurrente recibe 10 % de descuento sobre el precio base."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IncidenciaEntrada": {
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "CAMBIO",
+              "SERVICIO_ADICIONAL",
+              "INMUEBLE_MAYOR",
+              "MATERIAL_ESPECIAL"
+            ],
+            "title": "Tipo"
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Descripcion"
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extra",
+            "description": "Para SERVICIO_ADICIONAL (RB-12)"
+          },
+          "monto": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Monto",
+            "description": "Para MATERIAL_ESPECIAL (RB-14)"
+          },
+          "superficie_real": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Superficie Real",
+            "description": "Para INMUEBLE_MAYOR (RB-13)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tipo",
+          "descripcion"
+        ],
+        "title": "IncidenciaEntrada",
+        "example": {
+          "descripcion": "El cliente pidió limpiar el horno",
+          "extra": "HORNO",
+          "tipo": "SERVICIO_ADICIONAL"
+        }
+      },
+      "IncidenciaSalida": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo"
+          },
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion"
+          },
+          "registrada_en": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Registrada En"
+          },
+          "registrada_por": {
+            "type": "string",
+            "title": "Registrada Por"
+          },
+          "cargo_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cargo Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "tipo",
+          "descripcion",
+          "registrada_en",
+          "registrada_por",
+          "cargo_id"
+        ],
+        "title": "IncidenciaSalida"
+      },
+      "ProgramacionEntrada": {
+        "properties": {
+          "cotizacion_id": {
+            "type": "string",
+            "title": "Cotizacion Id"
+          },
+          "cuadrilla_id": {
+            "type": "string",
+            "title": "Cuadrilla Id"
+          },
+          "supervisor": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Supervisor"
+          },
+          "inicio": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Inicio",
+            "description": "Fecha y hora local de Monterrey"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cotizacion_id",
+          "cuadrilla_id",
+          "supervisor",
+          "inicio"
+        ],
+        "title": "ProgramacionEntrada",
+        "example": {
+          "cotizacion_id": "COT-DEMO-01",
+          "cuadrilla_id": "CUA-01",
+          "inicio": "2026-12-15T09:00:00",
+          "supervisor": "Ana López"
+        }
+      },
+      "ReprogramacionEntrada": {
+        "properties": {
+          "nuevo_inicio": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Nuevo Inicio"
+          },
+          "cargo": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cargo",
+            "description": "Solo con menos de 2 h de anticipación (H-07)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "nuevo_inicio"
+        ],
+        "title": "ReprogramacionEntrada",
+        "example": {
+          "nuevo_inicio": "2026-12-16T10:00:00"
+        }
+      },
+      "Rol": {
+        "type": "string",
+        "enum": [
+          "CLIENTE",
+          "COORDINADOR",
+          "SUPERVISOR",
+          "CUADRILLA",
+          "ADMINISTRACION"
+        ],
+        "title": "Rol"
+      },
+      "ServicioSalida": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "cotizacion_id": {
+            "type": "string",
+            "title": "Cotizacion Id"
+          },
+          "cliente_id": {
+            "type": "string",
+            "title": "Cliente Id"
+          },
+          "cuadrilla_id": {
+            "type": "string",
+            "title": "Cuadrilla Id"
+          },
+          "supervisor": {
+            "type": "string",
+            "title": "Supervisor"
+          },
+          "inicio": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Inicio"
+          },
+          "fin": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Fin"
+          },
+          "ubicacion": {
+            "type": "string",
+            "title": "Ubicacion"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "precio_acordado": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Precio Acordado"
+          },
+          "superficie_cotizada": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Superficie Cotizada"
+          },
+          "superficie_real": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Superficie Real"
+          },
+          "recalculo_pendiente": {
+            "type": "boolean",
+            "title": "Recalculo Pendiente"
+          },
+          "incidencias": {
+            "items": {
+              "$ref": "#/components/schemas/IncidenciaSalida"
+            },
+            "type": "array",
+            "title": "Incidencias"
+          },
+          "cargos": {
+            "items": {
+              "$ref": "#/components/schemas/CargoSalida"
+            },
+            "type": "array",
+            "title": "Cargos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "cotizacion_id",
+          "cliente_id",
+          "cuadrilla_id",
+          "supervisor",
+          "inicio",
+          "fin",
+          "ubicacion",
+          "estado",
+          "precio_acordado",
+          "superficie_cotizada",
+          "superficie_real",
+          "recalculo_pendiente",
+          "incidencias",
+          "cargos"
+        ],
+        "title": "ServicioSalida"
+      },
+      "TipoInmueble": {
+        "type": "string",
+        "enum": [
+          "RESIDENCIAL",
+          "EMPRESARIAL"
+        ],
+        "title": "TipoInmueble"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@ Versión 2.0 (PIA). Los 30 términos son los de la Unidad 2. La segunda tabla ag
 |---|---|---|---|
 | 1 | Cotización | Documento con la duración estimada, el personal necesario y el precio de un servicio, calculado con base en el inmueble, la frecuencia y los extras. | `Cotizacion` (aggregate) |
 | 2 | Solicitud de cotización | Petición inicial del cliente con ubicación, superficie, tipo de inmueble, frecuencia y extras; da origen al proceso de cotización. | `EstadoCotizacion.SOLICITADA` |
-| 3 | Tarifa base | Costo por metro cuadrado: $12 MXN/m² residencial y $15 MXN/m² empresarial. | `TARIFA_POR_M2` en `CalculadoraDePrecio` |
+| 3 | Tarifa base | Costo por metro cuadrado: $12 MXN/m² residencial y $15 MXN/m² empresarial. | `TARIFA_POR_M2` (`src/domain/precio.py`) |
 | 4 | Extra | Servicio adicional a la limpieza estándar que genera un cargo según el catálogo de extras. | `ExtraSolicitado` |
 | 5 | Frecuencia | Periodicidad: única o recurrente (semanal, quincenal o mensual); la recurrente tiene 10 % de descuento sobre el precio base. | `Frecuencia` |
 | 6 | Vigencia de la cotización | 5 días hábiles desde el envío; después, la cotización se marca como vencida. | `Vigencia` |
